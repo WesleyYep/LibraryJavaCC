@@ -73,45 +73,57 @@ public interface LibraryParserConstants {
   /** RegularExpression Id. */
   int TITLE = 31;
   /** RegularExpression Id. */
-  int AUTHOR = 32;
+  int BOOK_TITLE = 32;
   /** RegularExpression Id. */
-  int LB = 33;
+  int AUTHOR = 33;
   /** RegularExpression Id. */
-  int RB = 34;
+  int INITIAL = 34;
   /** RegularExpression Id. */
-  int LP = 35;
+  int LB = 35;
   /** RegularExpression Id. */
-  int RP = 36;
+  int RB = 36;
   /** RegularExpression Id. */
-  int COLON = 37;
+  int LP = 37;
   /** RegularExpression Id. */
-  int COMMA = 38;
+  int RP = 38;
   /** RegularExpression Id. */
-  int DOT = 39;
+  int COLON = 39;
   /** RegularExpression Id. */
-  int AT = 40;
+  int COMMA = 40;
   /** RegularExpression Id. */
-  int AM_PM = 41;
+  int QUOTE = 41;
   /** RegularExpression Id. */
-  int DIGIT = 42;
+  int DOT = 42;
   /** RegularExpression Id. */
-  int LETTER = 43;
+  int AT = 43;
   /** RegularExpression Id. */
-  int DIGIT_OR_LETTER = 44;
+  int AM_PM = 44;
   /** RegularExpression Id. */
-  int DIGIT_OR_LETTER_OR_HYPHEN = 45;
+  int DIGIT = 45;
   /** RegularExpression Id. */
-  int LETTER_OR_WHITESPACE = 46;
+  int LETTER = 46;
   /** RegularExpression Id. */
-  int WEB_ADDRESS_CHAR = 47;
+  int CAPITAL_LETTER = 47;
   /** RegularExpression Id. */
-  int WEB_PREFIX = 48;
+  int DIGIT_OR_LETTER = 48;
   /** RegularExpression Id. */
-  int BOOK_ID = 49;
+  int DIGIT_OR_LETTER_OR_HYPHEN = 49;
   /** RegularExpression Id. */
-  int PART = 50;
+  int BOOK_TITLE_CHAR = 50;
   /** RegularExpression Id. */
-  int PART_WITH_HYPHEN = 51;
+  int LETTER_OR_WHITESPACE = 51;
+  /** RegularExpression Id. */
+  int WEB_ADDRESS_CHAR = 52;
+  /** RegularExpression Id. */
+  int WEB_PREFIX = 53;
+  /** RegularExpression Id. */
+  int BOOK_ID = 54;
+  /** RegularExpression Id. */
+  int NAME_PART = 55;
+  /** RegularExpression Id. */
+  int PART = 56;
+  /** RegularExpression Id. */
+  int PART_WITH_HYPHEN = 57;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -150,24 +162,30 @@ public interface LibraryParserConstants {
     "\"BOOKCOLLECTION\"",
     "\"BOOK\"",
     "\"TITLE\"",
+    "<BOOK_TITLE>",
     "\"AUTHOR\"",
+    "<INITIAL>",
     "\"{\"",
     "\"}\"",
     "\"(\"",
     "\")\"",
     "\":\"",
     "\",\"",
+    "\"\\\"\"",
     "\".\"",
     "\"@\"",
     "<AM_PM>",
     "<DIGIT>",
     "<LETTER>",
+    "<CAPITAL_LETTER>",
     "<DIGIT_OR_LETTER>",
     "<DIGIT_OR_LETTER_OR_HYPHEN>",
+    "<BOOK_TITLE_CHAR>",
     "<LETTER_OR_WHITESPACE>",
     "<WEB_ADDRESS_CHAR>",
     "<WEB_PREFIX>",
     "<BOOK_ID>",
+    "<NAME_PART>",
     "<PART>",
     "<PART_WITH_HYPHEN>",
   };

@@ -43,24 +43,30 @@ TOKEN :
 | < BOOKCOLLECTION : "BOOKCOLLECTION" >
 | < BOOK : "BOOK" >
 | < TITLE : "TITLE" >
+| < BOOK_TITLE : "\"" (< BOOK_TITLE_CHAR >)+ "\"" >
 | < AUTHOR : "AUTHOR" >
+| < INITIAL : < CAPITAL_LETTER > <DOT > >
 | < LB : "{" >
 | < RB : "}" >
 | < LP : "(" >
 | < RP : ")" >
 | < COLON: ":">
 | < COMMA: ",">
+| < QUOTE: "\"" >
 | < DOT: "." >
 | < AT : "@" >
 | < AM_PM : "AM" | "PM" >
 | < #DIGIT : ["0"-"9"] >
 | < #LETTER : ["a"-"z","A"-"Z"] >
+| < #CAPITAL_LETTER : ["A"-"Z"] >
 | < #DIGIT_OR_LETTER : ["a"-"z","A"-"Z","0"-"9"] >
 | < #DIGIT_OR_LETTER_OR_HYPHEN : ["a"-"z","A"-"Z","0"-"9","-"] >
+| < #BOOK_TITLE_CHAR : ["a"-"z","A"-"Z","0"-"9","-",":"," "] >
 | < #LETTER_OR_WHITESPACE : ["a"-"z","A"-"Z"," "] >
 | < #WEB_ADDRESS_CHAR : ["a"-"z","A"-"Z","-","_","/","."] >
 | < #WEB_PREFIX : "http://" | "https://" >
 | < BOOK_ID : (< DIGIT_OR_LETTER >){8} >
+| < NAME_PART : < CAPITAL_LETTER > (< LETTER >)* >
 | < PART : (< DIGIT_OR_LETTER >)+ >
 | < PART_WITH_HYPHEN : (< DIGIT_OR_LETTER_OR_HYPHEN >)+ >
 }
@@ -70,7 +76,11 @@ void Library() : {}{
   <TIME_OF_YEAR ><STRING_WITH_SPACES ><LB ><START ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >
   <END ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >HoursList()< RB ><STAFF ><STRING_WITH_SPACES ><LB >
   < POSITION ><STRING_WITH_SPACES >EmailList()< TYPE ><TYPE_VALUE ><RATE ><MONEY ><RB >
-  < BOOKCOLLECTION ><STRING_WITH_SPACES ><LB >BookList()}
+  < BOOKCOLLECTION ><STRING_WITH_SPACES ><LB >BookList()< RB ><RB >< EOF > }
+
+void AuthorName() :{}
+{	< QUOTE >< NAME_PART ><COMMA >(< NAME_PART > | < INITIAL >)+< QUOTE >
+}  
 
 void BookList() :{}
 {
@@ -79,9 +89,8 @@ void BookList() :{}
 
 void Book() :{}
 {
-  < BOOK ><BOOK_ID ><LB >
+  < BOOK ><BOOK_ID ><LB ><TITLE ><BOOK_TITLE ><AUTHOR >AuthorName()< RB >
 }
-
 
 void EmailList() :{}
 {

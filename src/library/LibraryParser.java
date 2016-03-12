@@ -44,10 +44,44 @@ public class LibraryParser implements LibraryParserConstants {
     jj_consume_token(STRING_WITH_SPACES);
     jj_consume_token(LB);
     BookList();
+    jj_consume_token(RB);
+    jj_consume_token(RB);
+    jj_consume_token(0);
+  }
+
+  final public void AuthorName() throws ParseException {
+    jj_consume_token(QUOTE);
+    jj_consume_token(NAME_PART);
+    jj_consume_token(COMMA);
+    label_1:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case NAME_PART:
+        jj_consume_token(NAME_PART);
+        break;
+      case INITIAL:
+        jj_consume_token(INITIAL);
+        break;
+      default:
+        jj_la1[0] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case INITIAL:
+      case NAME_PART:
+        ;
+        break;
+      default:
+        jj_la1[1] = jj_gen;
+        break label_1;
+      }
+    }
+    jj_consume_token(QUOTE);
   }
 
   final public void BookList() throws ParseException {
-    label_1:
+    label_2:
     while (true) {
       Book();
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -55,8 +89,8 @@ public class LibraryParser implements LibraryParserConstants {
         ;
         break;
       default:
-        jj_la1[0] = jj_gen;
-        break label_1;
+        jj_la1[2] = jj_gen;
+        break label_2;
       }
     }
   }
@@ -65,18 +99,23 @@ public class LibraryParser implements LibraryParserConstants {
     jj_consume_token(BOOK);
     jj_consume_token(BOOK_ID);
     jj_consume_token(LB);
+    jj_consume_token(TITLE);
+    jj_consume_token(BOOK_TITLE);
+    jj_consume_token(AUTHOR);
+    AuthorName();
+    jj_consume_token(RB);
   }
 
   final public void EmailList() throws ParseException {
-    label_2:
+    label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case EMAIL:
         ;
         break;
       default:
-        jj_la1[1] = jj_gen;
-        break label_2;
+        jj_la1[3] = jj_gen;
+        break label_3;
       }
       Email();
     }
@@ -91,15 +130,15 @@ public class LibraryParser implements LibraryParserConstants {
 
   final public void LocalPart() throws ParseException {
     Part();
-    label_3:
+    label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case DOT:
         ;
         break;
       default:
-        jj_la1[2] = jj_gen;
-        break label_3;
+        jj_la1[4] = jj_gen;
+        break label_4;
       }
       jj_consume_token(DOT);
       Part();
@@ -116,19 +155,19 @@ public class LibraryParser implements LibraryParserConstants {
       jj_consume_token(PART_WITH_HYPHEN);
       break;
     default:
-      jj_la1[3] = jj_gen;
+      jj_la1[5] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
-    label_4:
+    label_5:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case DOT:
         ;
         break;
       default:
-        jj_la1[4] = jj_gen;
-        break label_4;
+        jj_la1[6] = jj_gen;
+        break label_5;
       }
       jj_consume_token(DOT);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -140,7 +179,7 @@ public class LibraryParser implements LibraryParserConstants {
         jj_consume_token(PART_WITH_HYPHEN);
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[7] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -156,7 +195,7 @@ public class LibraryParser implements LibraryParserConstants {
       jj_consume_token(BOOK_ID);
       break;
     default:
-      jj_la1[6] = jj_gen;
+      jj_la1[8] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -164,15 +203,15 @@ public class LibraryParser implements LibraryParserConstants {
 
   final public void DayList() throws ParseException {
     jj_consume_token(DAY_OF_WEEK);
-    label_5:
+    label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case COMMA:
         ;
         break;
       default:
-        jj_la1[7] = jj_gen;
-        break label_5;
+        jj_la1[9] = jj_gen;
+        break label_6;
       }
       jj_consume_token(COMMA);
       jj_consume_token(DAY_OF_WEEK);
@@ -180,7 +219,7 @@ public class LibraryParser implements LibraryParserConstants {
   }
 
   final public void HoursList() throws ParseException {
-    label_6:
+    label_7:
     while (true) {
       jj_consume_token(HOURS);
       DayList();
@@ -192,8 +231,8 @@ public class LibraryParser implements LibraryParserConstants {
         ;
         break;
       default:
-        jj_la1[8] = jj_gen;
-        break label_6;
+        jj_la1[10] = jj_gen;
+        break label_7;
       }
     }
   }
@@ -211,7 +250,7 @@ public class LibraryParser implements LibraryParserConstants {
       jj_consume_token(CLOSED);
       break;
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[11] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -226,7 +265,7 @@ public class LibraryParser implements LibraryParserConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[10];
+  final private int[] jj_la1 = new int[12];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -234,10 +273,10 @@ public class LibraryParser implements LibraryParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x40000000,0x400000,0x0,0x0,0x0,0x0,0x0,0x0,0x10000,0xa0000,};
+      jj_la1_0 = new int[] {0x0,0x0,0x40000000,0x400000,0x0,0x0,0x0,0x0,0x0,0x0,0x10000,0xa0000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x80,0xe0000,0x80,0xe0000,0x60000,0x40,0x0,0x0,};
+      jj_la1_1 = new int[] {0x800004,0x800004,0x0,0x0,0x400,0x3400000,0x400,0x3400000,0x1400000,0x100,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -251,7 +290,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -265,7 +304,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -275,7 +314,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -285,7 +324,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -294,7 +333,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -303,7 +342,7 @@ public class LibraryParser implements LibraryParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -354,12 +393,12 @@ public class LibraryParser implements LibraryParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[52];
+    boolean[] la1tokens = new boolean[58];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 12; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -371,7 +410,7 @@ public class LibraryParser implements LibraryParserConstants {
         }
       }
     }
-    for (int i = 0; i < 52; i++) {
+    for (int i = 0; i < 58; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
