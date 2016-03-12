@@ -1,0 +1,11 @@
+
+Person(F) "Kelly" {
+  Dr, Mrs, Ms;
+  022-000-0000, 999-9999;
+  111 Madam Dr, Auckland 1100;
+}
+
+Person(M) "Operator" {
+  111, 373-7599;
+  Mr, Sir;
+}

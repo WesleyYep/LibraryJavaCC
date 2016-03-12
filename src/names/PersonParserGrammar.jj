@@ -1,0 +1,98 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options{  static = false;}PARSER_BEGIN(PersonParser)package names;
+public class PersonParser{
+  private boolean isMale;
+  private String name;
+}PARSER_END(PersonParser)
+
+SKIP : 
+{
+ < SPACE: (" " | "\n" | "\t" | "\r")+ > 
+}  
+
+TOKEN : 
+{
+  < PERSON : "Person" >
+| < LP : "(" >
+| < RP : ")" >
+| < COMMA : "," >
+| < LB : "{" >
+| < RB : "}" >
+| < SEMI: ";">
+| < MISS : "Miss" >
+| < MRS : "Mrs" >
+| < MS : "Ms" >
+| < DR : "Dr" >
+| < MADAM : "Madam" >
+| < MR : "Mr" >
+| < SIR : "Sir" >
+| < MALE : "M" >
+| < FEMALE : "F" >
+| < #DIGIT : ["0"-"9"] >
+| < DIGIT_3 : (< DIGIT>){3} >
+| < PHONE_7 : (< DIGIT>){3} "-" (< DIGIT>){4}  >
+| < PHONE_10 : (< DIGIT>){3} "-" (< DIGIT>){3} "-" (< DIGIT>){4}  >
+| < NUMBER : (< DIGIT>)+ >
+| < #LETTER : ["a"-"z","A"-"Z"] >
+| < WORD : (< LETTER >)+ >
+| < NAME : "\"" (< LETTER >)+ "\"" >
+}
+
+int People() : {int personCount = 0; }
+{
+  (Person() {personCount++;})+ < EOF > {return personCount;}
+}
+
+void Person() : { }
+{
+  < PERSON > <LP > (< MALE > {isMale = true;} | < FEMALE > {isMale = false;}  ) < RP > <NAME >  { name = token.image; } <LB >
+	(  LOOKAHEAD(TitleList()) TitleList()
+	 | LOOKAHEAD(PhoneList()) PhoneList()
+	 | Address() )*
+  < RB >
+}
+
+void TitleList() : { }
+{
+	Title(true) ( < COMMA > Title(true) )* < SEMI >
+}
+
+void PhoneList() :  { }
+{
+  Phone() (< COMMA > Phone())* < SEMI >
+}
+
+void Phone() : { }
+{
+  <DIGIT_3> | <PHONE_7>  | <PHONE_10>  
+}
+
+void Address() : { }
+{
+	Part() ( (< COMMA >)? Part() )* < SEMI >
+}
+
+void Part() : { }
+{
+  < WORD> | < NUMBER> | <DIGIT_3> | Title(false) | < PERSON > | < MALE > | < FEMALE >
+}
+
+void Title(boolean checkingTitle) : { }
+{
+    < DR>
+    | ( < MADAM> | < MISS> | < MRS> | < MS> )
+    {
+      if (isMale & checkingTitle)
+      {
+		throw new ParseException(name +" is not female, you cannot call him "+token.image+" on line "+token.beginLine);
+      } 
+    }
+    | ( < MR > | < SIR > )
+    {
+      if (!isMale & checkingTitle)
+      {
+		throw new ParseException(name +" is not female, you cannot call him "+token.image+" on line "+token.beginLine);
+      } 
+    }
+}
