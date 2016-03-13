@@ -10,7 +10,7 @@ LIBRARY "Engineering Library" {
     }
     STAFF "Rod Chan" {
 		POSITION "Client Services Librarian"
-		EMAIL rod@auckland.ac.nz
+		EMAIL rod@-auck-land.ac.nz
 		TYPE Full-time
 		RATE $85000.00
     }
@@ -22,9 +22,8 @@ LIBRARY "Engineering Library" {
     }
     BOOKCOLLECTION "Fiction" {
 		BOOK 8jh30st2 {
-		    AUTHOR "Mak, Ronald P."
+		    AUTHOR "Mak, Ronald P. PP. Test T. Test"
 		    TITLE "Writing Compilers and Interpreters: A Software Engineering Approach"
-		    AUTHOR "  Mak   ,  Ronald P."
 		}
     }
 }
