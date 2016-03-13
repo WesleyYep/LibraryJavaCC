@@ -42,8 +42,6 @@ TOKEN :
 | < TYPE_VALUE : "Full-time" | "Part-time">
 | < RATE : "RATE" >
 | < MONEY : <DOLLAR> | (< DOLLAR > "." (<CENTS >){0,1}) >
-| < #DOLLAR : "$" (< DIGIT>)+ >
-| < #CENTS : (< DIGIT>){2} >
 | < BOOKCOLLECTION : "BOOKCOLLECTION" >
 | < BOOK : "BOOK" >
 | < TITLE : "TITLE" >
@@ -60,6 +58,11 @@ TOKEN :
 | < DOT: "." >
 | < AT : "@" >
 | < AM_PM : "AM" | "PM" >
+| < BOOK_ID : (< DIGIT_OR_LETTER >){8} >
+| < NAME_PART : < CAPITAL_LETTER > (< LETTER >)* >
+| < PART : (< DIGIT_OR_LETTER >)+ >
+| < PART_WITH_HYPHEN : (< DIGIT_OR_LETTER_OR_HYPHEN >)+ >
+| < EMAIL_ADDRESS : (<PART> | <BOOK_ID>)(< DOT >(<PART> | <BOOK_ID>))* <AT> (<PART> | <BOOK_ID> |< PART_WITH_HYPHEN >)(< DOT >(<PART> | <BOOK_ID> |< PART_WITH_HYPHEN >))* >
 | < #DIGIT : ["0"-"9"] >
 | < #LETTER : ["a"-"z","A"-"Z"] >
 | < #CAPITAL_LETTER : ["A"-"Z"] >
@@ -69,11 +72,8 @@ TOKEN :
 | < #LETTER_OR_WHITESPACE : ["a"-"z","A"-"Z"," "] >
 | < #WEB_ADDRESS_CHAR : ["a"-"z","A"-"Z","-","_","/","."] >
 | < #WEB_PREFIX : "http://" | "https://" >
-| < BOOK_ID : (< DIGIT_OR_LETTER >){8} >
-| < NAME_PART : < CAPITAL_LETTER > (< LETTER >)* >
-| < PART : (< DIGIT_OR_LETTER >)+ >
-| < PART_WITH_HYPHEN : (< DIGIT_OR_LETTER_OR_HYPHEN >)+ >
-| < EMAIL_ADDRESS : (<PART> | <BOOK_ID>)(< DOT >(<PART> | <BOOK_ID>))* <AT> (<PART> | <BOOK_ID> |< PART_WITH_HYPHEN >)(< DOT >(<PART> | <BOOK_ID> |< PART_WITH_HYPHEN >))* >
+| < #DOLLAR : "$" (< DIGIT>)+ >
+| < #CENTS : (< DIGIT>){2} >
 }
 
 void Library() : {}{
@@ -105,11 +105,41 @@ void Library() : {}{
       if (!bookCollectionPresent) {throw new ParseException("No BOOKCOLLECTION entry found");} 
   }}
 
-void BookCollection() :{}
+//the below Production rules are for the Website entry
+void Website() :{}
 {
-	< BOOKCOLLECTION ><STRING_WITH_SPACES ><LB >BookList()< RB >
-} 
+	<WEBSITE ><WEBSITE_ENTRY >
+}  
 
+//the below Production rules are for the Building entry
+void Building() :{}
+{
+	<BUILDING ><BUILDING_NUMBER >
+}  
+
+//the below Production rules are for the TimeOfYear entry
+void TimeOfYear() :{}
+{
+	<TIME_OF_YEAR ><STRING_WITH_SPACES ><LB ><START ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >
+  	<END ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >HoursList()< RB >
+}
+
+void HoursList() :{}
+{
+  (<HOURS >DayList()<LP >TimePeriod()< RP >)+
+}
+
+void DayList() :{}
+{
+  < DAY_OF_WEEK >(<COMMA ><DAY_OF_WEEK >)*
+}
+
+void TimePeriod() :{}
+{
+	(< TIME ><AM_PM ><TO ><TIME ><AM_PM >) | < CLOSED >
+}
+
+//the below Production rules are for the Staff subsection
 void Staff(boolean positionPresent, boolean typePresent, boolean ratePresent, boolean emailPresent) :{}
 {
 	<STAFF ><STRING_WITH_SPACES ><LB >
@@ -158,25 +188,16 @@ void Position() :{}
 	< POSITION >(<STRING_WITH_SPACES> | <STRING_WITH_SPACES_CAN_BE_EMPTY> )
 }
 
-void TimeOfYear() :{}
+void Email() :{}
 {
-	<TIME_OF_YEAR ><STRING_WITH_SPACES ><LB ><START ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >
-  	<END ><DAY ><COMMA ><DAY_OF_MONTH ><MONTH ><YEAR >HoursList()< RB >
+	<EMAIL><EMAIL_ADDRESS>
+}
+
+//the below Production rules are for the BookCollection subsection
+void BookCollection() :{}
+{
+	< BOOKCOLLECTION ><STRING_WITH_SPACES ><LB >BookList()< RB >
 } 
-
-void Building() :{}
-{
-	<BUILDING ><BUILDING_NUMBER >
-}  
-
-void Website() :{}
-{
-	<WEBSITE ><WEBSITE_ENTRY >
-}  
-
-void Author() :{}
-{	<AUTHOR >< QUOTE >< NAME_PART ><COMMA >(< NAME_PART > | < INITIAL >)+< QUOTE >
-}  
 
 void BookList() :{}
 {
@@ -202,24 +223,13 @@ void Book(boolean titlePresent, boolean authorPresent) :{}
   	}
 }
 
+void Author() :{}
+{
+	<AUTHOR >< QUOTE >< NAME_PART ><COMMA >(< NAME_PART > | < INITIAL >)+< QUOTE >
+}  
+
 void BookTitle() :{} 
 {
 	<TITLE >(<BOOK_TITLE > | <STRING_WITH_SPACES_CAN_BE_EMPTY>)
 }
 
-void Email() :{}{	//< EMAIL >LocalPart()< AT >DomainPart()
-	<EMAIL><EMAIL_ADDRESS>
-}
-
-//void DomainPart() :{}//{//	<PART> | <BOOK_ID> | <NAME_PART> | <LOCAL_PART> | <DOMAIN_PART>//}////void LocalPart() :{}//{//  (<PART > | < BOOK_ID > | <NAME_PART> | <LOCAL_PART> )//}
-
-void DayList() :{}{
-  < DAY_OF_WEEK >(<COMMA ><DAY_OF_WEEK >)*}
-
-void HoursList() :{}
-{
-  (<HOURS >DayList()<LP >TimePeriod()< RP >)+}
-
-void TimePeriod() :{}
-{	(< TIME ><AM_PM ><TO ><TIME ><AM_PM >) | < CLOSED >
-}
