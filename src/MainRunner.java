@@ -12,8 +12,8 @@ public class MainRunner {
 
 	public static void main(String[] args) {
 		
-		for (int i = 1; i <= 27; i++ ) {
-			File f = new File("tests"+System.getProperty("file.separator")+"input"+i+".txt");
+		for (int i = 1; i <= 48; i++ ) {
+			File f = new File("tests2"+System.getProperty("file.separator")+"input"+i+".txt");
 			try {
 				FileInputStream is = new FileInputStream(f);
 				
